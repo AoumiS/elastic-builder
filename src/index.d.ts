@@ -6562,7 +6562,9 @@ declare namespace esb {
      */
     export function movingFunctionAggregation(
         name: string,
-        bucketsPath?: string
+        bucketsPath: string,
+        window: number,
+        script: string
     ): MovingFunctionAggregation;
 
     /**
