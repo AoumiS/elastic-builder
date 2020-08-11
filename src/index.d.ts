@@ -4919,10 +4919,10 @@ declare namespace esb {
     }
 
     /**
-     * The `AutoDateHistogramAggregation` is similar to the Date histogram aggregation except 
-     * instead of providing an interval to use as the width of each bucket, a target number 
-     * of buckets is provided indicating the number of buckets needed and the interval of the 
-     * buckets is automatically chosen to best achieve that target. 
+     * The `AutoDateHistogramAggregation` is similar to the Date histogram aggregation except
+     * instead of providing an interval to use as the width of each bucket, a target number
+     * of buckets is provided indicating the number of buckets needed and the interval of the
+     * buckets is automatically chosen to best achieve that target.
      *
      * @param {string} name The name which will be used to refer to this aggregation.
      * @param {string} aggType Type of aggregation
@@ -4931,11 +4931,7 @@ declare namespace esb {
      * @extends BucketAggregationBase
      */
     export class AutoDateHistogramAggregation extends BucketAggregationBase {
-        constructor(
-            name: string,
-            field?: string,
-            buckets?: number
-        );
+        constructor(name: string, field?: string, buckets?: number);
 
         /**
          * Sets the bucket count. Buckets are generated based on this interval value.
@@ -6520,6 +6516,54 @@ declare namespace esb {
         name: string,
         bucketsPath?: string
     ): MovingAverageAggregation;
+
+    /**
+     * Given an ordered series of data, the Moving Function aggregation will
+     * slide a window across the data and emit the Function value of that window.
+     * `moving_fn` aggregations must be embedded inside of a histogram or
+     * date_histogram aggregation.
+     *
+     * @param {string} name The name which will be used to refer to this aggregation.
+     * @param {string=} bucketsPath The relative path of metric to aggregate over
+     * @param {number} window Sets the size of window to "slide" across the histogram.
+     * @param {string} script The script that should be executed on each window of data
+     * @extends PipelineAggregationBase
+     */
+    export class MovingFunctionAggregation extends PipelineAggregationBase {
+        constructor(
+            name: string,
+            bucketsPath: string,
+            window: number,
+            script: string
+        );
+
+        /**
+         * @override
+         * @throws {Error} This method cannot be called on MovingFunctionAggregation
+         */
+        format(): never;
+
+        /**
+         * Shift of window position.
+         *
+         * @param {number} shift Shift of window position.
+         */
+        shift(shift: number): this;
+    }
+
+    /**
+     * Given an ordered series of data, the Moving Function aggregation will
+     * slide a window across the data and emit the Function value of that window.
+     * `moving_fn` aggregations must be embedded inside of a histogram or
+     * date_histogram aggregation.
+     *
+     * @param {string} name The name which will be used to refer to this aggregation.
+     * @param {string=} bucketsPath The relative path of metric to aggregate over
+     */
+    export function movingFunctionAggregation(
+        name: string,
+        bucketsPath?: string
+    ): MovingFunctionAggregation;
 
     /**
      * A parent pipeline aggregation which calculates the cumulative sum of
